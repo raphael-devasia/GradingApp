@@ -14,6 +14,7 @@ authRoutes.post("/oauth", (req, res) => userController.authOAuth(req, res))
 authRoutes.get("/test", (req, res) => {
     res.send("test")
 })
+authRoutes.post("/refresh", (req, res) => userController.refreshToken(req, res))
 
 
 

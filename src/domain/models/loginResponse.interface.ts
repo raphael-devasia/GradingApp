@@ -4,10 +4,11 @@ export interface ILoginResponse {
     token: string
     message: string
     expiresIn: number
+    refreshToken: string 
     userId?: string
     email?: string
     name?: string
-    classroomId?:string
+    classroomId?: string
 }
 
 export interface IUpdatePlanResponse {

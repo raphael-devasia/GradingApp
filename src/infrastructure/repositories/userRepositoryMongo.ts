@@ -28,6 +28,18 @@ export class UserRepositoryMongo implements IUserRepository {
             throw new Error("Error finding user")
         }
     }
+    async findByUserId(userId: string): Promise<IUser | null> {
+        try {
+            // Search for a user with the provided userId
+            const existingUser = await User.findById(userId)
+            return existingUser
+        } catch (error) {
+            console.error("Error finding user by userId:", error)
+            throw new Error("Error finding user")
+        }
+    }
+
+    
     async update(
         userId: string,
         updateData: Partial<IUser>
@@ -66,50 +78,53 @@ export class UserRepositoryMongo implements IUserRepository {
             throw new Error("User is not registered")
         }
     }
-    async  updatePlan(
-    plan: string,
-    billingCycle: string,
-    userId: string,
-    stripeCustomerId?: string,
-    stripeSubscriptionId?: string
-): Promise<IUser> {
-    try {
-        const user = await User.findById(userId)
-        if (!user) {
-            throw new Error("User not found")
-        }
-
-        // Initialize subscription if undefined
-        if (!user.subscription) {
-            user.subscription = {
-                plan: "",
-                billingCycle: "",
-                stripeCustomerId: "",
-                stripeSubscriptionId: "",
-                status: "inactive",
+    async updatePlan(
+        plan: string,
+        billingCycle: string,
+        userId: string,
+        stripeCustomerId?: string,
+        stripeSubscriptionId?: string
+    ): Promise<IUser> {
+        try {
+            const user = await User.findById(userId)
+            if (!user) {
+                throw new Error("User not found")
             }
-        }
 
-        // Update subscription fields
-        user.subscription = {
-            plan,
-            billingCycle,
-            stripeCustomerId: stripeCustomerId || user.subscription.stripeCustomerId,
-            stripeSubscriptionId: stripeSubscriptionId || user.subscription.stripeSubscriptionId,
-            status: "active", // Set to active on successful payment
-        }
+            // Initialize subscription if undefined
+            if (!user.subscription) {
+                user.subscription = {
+                    plan: "",
+                    billingCycle: "",
+                    stripeCustomerId: "",
+                    stripeSubscriptionId: "",
+                    status: "inactive",
+                }
+            }
 
-        const updatedUser = await user.save()
-        console.log("Updated user subscription:", {
-            userId,
-            plan,
-            billingCycle,
-            status: updatedUser.subscription.status,
-        })
-        return updatedUser
-    } catch (error: any) {
-        console.error("Error updating user plan:", error.message || error)
-        throw new Error(error.message || "Error updating user plan")
+            // Update subscription fields
+            user.subscription = {
+                plan,
+                billingCycle,
+                stripeCustomerId:
+                    stripeCustomerId || user.subscription.stripeCustomerId,
+                stripeSubscriptionId:
+                    stripeSubscriptionId ||
+                    user.subscription.stripeSubscriptionId,
+                status: "active", // Set to active on successful payment
+            }
+
+            const updatedUser = await user.save()
+            console.log("Updated user subscription:", {
+                userId,
+                plan,
+                billingCycle,
+                status: updatedUser.subscription.status,
+            })
+            return updatedUser
+        } catch (error: any) {
+            console.error("Error updating user plan:", error.message || error)
+            throw new Error(error.message || "Error updating user plan")
+        }
     }
-}
 }

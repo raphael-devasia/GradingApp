@@ -5,14 +5,16 @@ import { IUser } from "../../domain/models/user.interface"
 import { ILoginResponse, IUpdatePlanResponse } from "../../domain/models/loginResponse.interface"
 
 import { IClassroomRepository } from "../../domain/repositories/classroomRepository"
+import { IRefreshTokenRepository } from "../../domain/repositories/refresh-token.repository"
+
 
 export class UserUseCase {
     constructor(
         private userRepository: IUserRepository,
-        private classroomRepository: IClassroomRepository
+        private classroomRepository: IClassroomRepository,
+        private refreshTokenRepository: IRefreshTokenRepository
     ) {}
 
-   
     async createUser(
         userData: Partial<IUser>
     ): Promise<{ user: IUser; classroomId: string }> {
@@ -47,8 +49,6 @@ export class UserUseCase {
         // Create user
         const user = await this.userRepository.create(userData)
 
-        
-
         // Create classroom
         const classroom = await this.classroomRepository.createClassRoom(
             user._id!.toString()
@@ -62,6 +62,9 @@ export class UserUseCase {
 
     async getUserByEmail(email: string): Promise<IUser | null> {
         return this.userRepository.findByEmail(email)
+    }
+    async getUserById(userId: string): Promise<IUser | null> {
+        return this.userRepository.findByUserId(userId)
     }
 
     async login(email: string, password: string): Promise<ILoginResponse> {
@@ -83,22 +86,37 @@ export class UserUseCase {
 
         // Generate JWT token
         const status = user.subscription?.status === "active"
-        const classRoom = await this.classroomRepository.findByTeacherId(user._id)
+        const classRoom = await this.classroomRepository.findByTeacherId(
+            user._id
+        )
         const token = jwt.sign(
             { id: user._id, sub_active: status },
-            process.env.JWT_SECRET || "", 
-            { expiresIn: "10h" } 
+            process.env.JWT_SECRET || "",
+            { expiresIn: "1h" }
         )
+        // Generate refresh token
+        const refreshToken = jwt.sign(
+            { id: user._id },
+            process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || "",
+            { expiresIn: "7d" }
+        )
+        // Store refresh token
+        await this.refreshTokenRepository.save({
+            userId: user._id.toString(),
+            token: refreshToken,
+            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        })
 
         // Construct the ILoginResponse object
         const loginResponse: ILoginResponse = {
             token: token,
             message: "Login successful",
-            expiresIn: 36000, 
-            userId: user._id.toString(), 
+            expiresIn: 3600,
+            userId: user._id.toString(),
             email: user.email,
             name: user.name,
-            classroomId:classRoom?.id,
+            classroomId: classRoom?.id,
+            refreshToken,
         }
 
         // Return the login response
