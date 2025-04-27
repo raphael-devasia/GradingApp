@@ -87,14 +87,14 @@ export class UserUseCase {
         const token = jwt.sign(
             { id: user._id, sub_active: status },
             process.env.JWT_SECRET || "", 
-            { expiresIn: "1h" } 
+            { expiresIn: "10h" } 
         )
 
         // Construct the ILoginResponse object
         const loginResponse: ILoginResponse = {
             token: token,
             message: "Login successful",
-            expiresIn: 3600, 
+            expiresIn: 36000, 
             userId: user._id.toString(), 
             email: user.email,
             name: user.name,
