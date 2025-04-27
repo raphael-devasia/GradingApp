@@ -12,31 +12,7 @@ export class UserUseCase {
         private classroomRepository: IClassroomRepository
     ) {}
 
-    // async createUser(userData: IUser): Promise<IUser> {
-    //     // Validate inputs
-    //     if (!userData.name || !userData.email || !userData.password) {
-    //         throw new Error("Name, email, and password are required")
-    //     }
-    //     if (userData.password.length < 8) {
-    //         throw new Error("Password must be at least 8 characters")
-    //     }
-
-    //     // Check if user exists
-    //     const existingUser = await this.userRepository.findByEmail(
-    //         userData.email
-    //     )
-    //     if (existingUser) {
-    //         throw new Error("Email already in use")
-    //     }
-
-    //     // Hash password
-    //     const hashedPassword = await bcrypt.hash(userData.password, 10)
-    //     userData.password = hashedPassword
-
-    //     // Create user
-    //     const user = await this.userRepository.create(userData)
-    //     return user
-    // }
+   
     async createUser(
         userData: Partial<IUser>
     ): Promise<{ user: IUser; classroomId: string }> {
@@ -110,18 +86,18 @@ export class UserUseCase {
         const classRoom = await this.classroomRepository.findByTeacherId(user._id)
         const token = jwt.sign(
             { id: user._id, sub_active: status },
-            process.env.JWT_SECRET || "", // Secret key for signing the JWT token
-            { expiresIn: "1h" } // Expiry time for the token
+            process.env.JWT_SECRET || "", 
+            { expiresIn: "1h" } 
         )
 
         // Construct the ILoginResponse object
         const loginResponse: ILoginResponse = {
             token: token,
             message: "Login successful",
-            expiresIn: 3600, // Token expiration time in seconds
-            userId: user._id.toString(), // Convert MongoDB ObjectID to string
+            expiresIn: 3600, 
+            userId: user._id.toString(), 
             email: user.email,
-            name: user.name, // Assuming user has firstName field
+            name: user.name,
             classroomId:classRoom?.id,
         }
 

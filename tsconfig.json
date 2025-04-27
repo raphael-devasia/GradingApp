@@ -14,7 +14,7 @@
         
     },
     "include": [
-        "./api/*.ts",
+        
         "src/**/*.ts" // Keep existing include pattern for src folder
         // "auth-intermediary-service/**/*.ts"
         

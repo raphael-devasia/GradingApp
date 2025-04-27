@@ -3,23 +3,6 @@ import { IAssignmentRepository } from "../../domain/repositories/assignmentRepos
 import { AssignmentContentService } from "../assignment-content-service";
 
 
-// export class AssignmentUseCase {
-//     constructor(private assignmentContentService: AssignmentContentService,private assignmentRepository: IAssignmentRepository) {}
-
-//     async createAssignment(
-//         assignmentData: Partial<IAssignment>
-//     ): Promise<Partial<IAssignment>> {
-//         return this.assignmentRepository.createAssignment(assignmentData)
-//     }
-//     async generateAssignmentContent(
-//         assignmentData: Partial<IAssignment>
-//     ): Promise<Partial<IAssignment>> {
-//         return this.assignmentContentService.generateContent(
-//             assignmentData
-//         )
-//     }
-// }
-
 export class AssignmentUseCase {
     constructor(
         private assignmentContentService: AssignmentContentService,

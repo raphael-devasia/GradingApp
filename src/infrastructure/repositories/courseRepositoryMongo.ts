@@ -23,7 +23,7 @@ export class CourseRepositoryMongo implements ICourseRepository {
     }
     async getAllUserCourses(userId: string): Promise<ICourse[]> {
         try {
-            console.log('the user id is ',userId);
+           
             
             // Fetch courses filtered by userId
             const courses = await Course.find({ userId: userId })
@@ -31,16 +31,16 @@ export class CourseRepositoryMongo implements ICourseRepository {
             
             return courses
         } catch (error: any) {
-            console.error("Error fetching courses:", error.message) // Log the error for debugging
-            throw new Error("Failed to fetch courses. Please try again later.") // Throw a user-friendly error message
+            
+            throw new Error("Failed to fetch courses. Please try again later.") 
         }
     }
     async findById(courseId: string): Promise<ICourse | null> {
         try {
-            // Assuming you are using a database query or service call to fetch the course by ID
+            
             const course = await Course.findById(courseId)
             if (!course) {
-                console.log("Course not found")
+               
                 return null // If the course is not found, return null
             }
 
@@ -59,7 +59,7 @@ export class CourseRepositoryMongo implements ICourseRepository {
             const courses = await Course.find()
                 .populate({
                     path: "userId", // Field in Course schema referencing User
-                    select: "firstName lastName", // Only fetch these fields
+                    select: "firstName lastName name", // Only fetch these fields
                 })
                 .exec()
             // Map courses to include firstName and lastName directly in the object

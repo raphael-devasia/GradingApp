@@ -67,7 +67,7 @@ export class ClassroomRepositoryMongo implements IClassroomRepository {
             }
             return studentDoc.toJSON() as IStudent
         } catch (error: any) {
-            console.error("Error in addStudent:", error.message)
+           
             throw new Error(`Failed to add student: ${error.message}`)
         }
     }
@@ -102,7 +102,7 @@ export class ClassroomRepositoryMongo implements IClassroomRepository {
             }
             return coTeacherDoc.toJSON() as ICoTeacher
         } catch (error: any) {
-            console.error("Error in addCoTeacher:", error.message)
+            
             throw new Error(`Failed to add co-teacher: ${error.message}`)
         }
     }
