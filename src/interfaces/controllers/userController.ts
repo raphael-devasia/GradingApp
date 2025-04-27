@@ -10,7 +10,7 @@ const generateToken = (id: string, subActive: boolean,type?:string) => {
     return jwt.sign(
         { id, sub_active: subActive, type:type },
         process.env.JWT_SECRET!,
-        { expiresIn: "10h" }
+        { expiresIn: "1h" }
     )
 }
 interface CustomJwtPayload extends jwt.JwtPayload {
@@ -33,7 +33,7 @@ export class UserController {
             const token = jwt.sign(
                 { id: user.user._id, type: "signup", email: user.user.email },
                 process.env.JWT_SECRET || "",
-                { expiresIn: "10h" }
+                { expiresIn: "1h" }
             )
 
             res.status(HttpStatus.OK).json({
@@ -268,7 +268,7 @@ export class UserController {
                 token = jwt.sign(
                     { id: user._id, sub_active: true },
                     process.env.JWT_SECRET as string,
-                    { expiresIn: "10h" }
+                    { expiresIn: "1h" }
                 )
                 const classroom = await this.classroomUseCase.findByTeacherId(
                     user._id.toString()

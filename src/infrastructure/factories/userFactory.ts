@@ -1,4 +1,5 @@
 import { ClassroomUseCase } from "../../application/usecases/classRoom.usecase"
+import { RefreshTokenUseCase } from "../../application/usecases/refreshTokenUsecase"
 import { UserUseCase } from "../../application/usecases/user.usecase"
 import { UserController } from "../../interfaces/controllers/userController"
 import { ClassroomRepositoryMongo } from "../repositories/ClassroomRepositoryMongo"
@@ -16,6 +17,11 @@ export const createUserController = (): UserController => {
         refreshTokenRepository
     )
     const classroomUseCase = new ClassroomUseCase(classRoomRepository)
+    const refreshTokenUseCase = new RefreshTokenUseCase(refreshTokenRepository)
 
-    return new UserController(userUseCase, classroomUseCase)
+    return new UserController(
+        userUseCase,
+        classroomUseCase,
+        refreshTokenUseCase
+    )
 }
