@@ -12,7 +12,7 @@ import { AssignmentRepositoryMongo } from "../repositories/assignmentRepositoryM
 export const createAssignmentController = (): AssignmentController => {
     const api_key =
         process.env.DEEP_SEEK_API ||
-        "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"
+        "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"
     const aiProvider = new OpenRouterAIProvider(api_key)
     const assignmentContentValidator = new AssignmentContentValidator()
     const assignmentRepository = new AssignmentRepositoryMongo()
