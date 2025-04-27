@@ -1,4 +1,4 @@
-import { OpenRouterSyllabusProvider } from "../../application/OpenRouterSyllabusProvider"
+import { OpenRouterSyllabusProvider } from "../../application/openRouterSyllabusProvider"
 import { SyllabusContentService } from "../../application/syllabus-content-service"
 import { SyllabusContentValidator } from "../../application/syllabus-content-validator"
 import { SyllabusUseCase } from "../../application/usecases/syllabus.usecase"
