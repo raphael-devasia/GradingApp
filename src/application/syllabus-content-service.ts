@@ -1,7 +1,7 @@
 import { SyllabusContentValidator } from "./syllabus-content-validator"
 
 import { Syllabus } from "../domain/models/syllabus.interface"
-import { OpenRouterSyllabusProvider } from "./OpenRouterSyllabusProvider"
+import { OpenRouterSyllabusProvider } from "./openRouterSyllabusProvider"
 
 
 
