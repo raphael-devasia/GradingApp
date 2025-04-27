@@ -3,21 +3,20 @@
         "target": "ES6",
         "module": "CommonJS",
         "outDir": "dist",
-        
+        "incremental": true,
+        "maxNodeModuleJsDepth": 0,
+
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
-        "allowJs": true,
-        
+        "allowJs": true
     },
     "include": [
-        
         "src/**/*.ts" // Keep existing include pattern for src folder
         // "auth-intermediary-service/**/*.ts"
-        
     ],
-    "exclude": ["node_modules", "dist"]
+    "exclude": ["node_modules", "dist", "build"]
 }
