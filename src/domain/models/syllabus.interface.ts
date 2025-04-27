@@ -2,6 +2,8 @@ export interface Syllabus {
     courseTitle: string
     instructor: string
     term: string
+    subject: string
+    gradeLevel:string
     courseDescription: string
     learningObjectives: string[]
     requiredMaterials: {
